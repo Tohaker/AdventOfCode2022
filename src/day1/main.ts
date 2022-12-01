@@ -1,25 +1,7 @@
 export const sumCalories = (rations: number[]) =>
   rations.reduce((acc, n) => acc + n, 0);
 
-export const runPart1 = (input: string) => {
-  const lines = input.split("\n");
-
-  const backpacks: number[][] = [];
-  let currentBackpack: number[] = [];
-
-  lines.forEach((v) => {
-    if (v === "") {
-      backpacks.push(currentBackpack);
-      currentBackpack = [];
-    } else {
-      currentBackpack.push(parseInt(v));
-    }
-  });
-
-  return backpacks.map(sumCalories).sort((a, b) => b - a)[0];
-};
-
-export const runPart2 = (input: string) => {
+const loadInputToBackpacks = (input: string) => {
   const lines = input.split("\n");
 
   const backpacks: number[][] = [];
@@ -38,12 +20,15 @@ export const runPart2 = (input: string) => {
     }
   });
 
-  return sumCalories(
-    backpacks
-      .map(sumCalories)
-      .sort((a, b) => b - a)
-      .slice(0, 3)
-  );
+  return backpacks.map(sumCalories).sort((a, b) => b - a);
+};
+
+export const runPart1 = (input: string) => {
+  return loadInputToBackpacks(input)[0];
+};
+
+export const runPart2 = (input: string) => {
+  return sumCalories(loadInputToBackpacks(input).slice(0, 3));
 };
 
 export const part1 = () => {
