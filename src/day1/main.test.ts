@@ -1,7 +1,7 @@
 import { assertEquals } from "https://deno.land/std@0.161.0/testing/asserts.ts";
 import { describe, it } from "https://deno.land/std@0.161.0/testing/bdd.ts";
 
-import { sumCalories, runPart1, part1, runPart2, part2 } from "./main.ts";
+import { part1, part2, runPart1, runPart2, sumCalories } from "./main.ts";
 
 describe("calculates total calories", () => {
   it("should calculate total calories for a single line", () => {
