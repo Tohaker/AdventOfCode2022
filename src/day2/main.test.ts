@@ -1,11 +1,8 @@
 import { assertEquals } from "https://deno.land/std@0.161.0/testing/asserts.ts";
 import { describe, it } from "https://deno.land/std@0.161.0/testing/bdd.ts";
-import {
-  calculateScore,
-  calculateStrategy,
-  runPart1,
-  runPart2,
-} from "./main.ts";
+import { calculateScore, calculateStrategy, Day2 } from "./main.ts";
+
+const day2 = new Day2();
 
 describe("part 1", () => {
   describe("single strategy", () => {
@@ -27,13 +24,13 @@ describe("part 1", () => {
         B X
         C Z`;
 
-    assertEquals(runPart1(input), 15);
+    assertEquals(day2.part1(input), 15);
   });
 
   it("should return the correct result for the input", () => {
     const input = Deno.readTextFileSync("./src/day2/input.txt");
 
-    assertEquals(runPart1(input), 11666);
+    assertEquals(day2.part1(input), 11666);
   });
 });
 
@@ -57,12 +54,12 @@ describe("part 2", () => {
         B X
         C Z`;
 
-    assertEquals(runPart2(input), 12);
+    assertEquals(day2.part2(input), 12);
   });
 
   it("should return the correct result for the input", () => {
     const input = Deno.readTextFileSync("./src/day2/input.txt");
 
-    assertEquals(runPart2(input), 12767);
+    assertEquals(day2.part2(input), 12767);
   });
 });

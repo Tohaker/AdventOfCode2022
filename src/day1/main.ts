@@ -1,3 +1,5 @@
+import { Day } from "../day.ts";
+
 export const sumCalories = (rations: number[]) =>
   rations.reduce((acc, n) => acc + n, 0);
 
@@ -23,22 +25,16 @@ const loadInputToBackpacks = (input: string) => {
   return backpacks.map(sumCalories).sort((a, b) => b - a);
 };
 
-export const runPart1 = (input: string) => {
-  return loadInputToBackpacks(input)[0];
-};
+export class Day1 extends Day {
+  constructor() {
+    super();
+  }
 
-export const runPart2 = (input: string) => {
-  return sumCalories(loadInputToBackpacks(input).slice(0, 3));
-};
+  part1(input: string) {
+    return loadInputToBackpacks(input)[0];
+  }
 
-export const part1 = () => {
-  const input = Deno.readTextFileSync("./src/day1/input.txt");
-
-  return runPart1(input);
-};
-
-export const part2 = () => {
-  const input = Deno.readTextFileSync("./src/day1/input.txt");
-
-  return runPart2(input);
-};
+  part2(input: string) {
+    return sumCalories(loadInputToBackpacks(input).slice(0, 3));
+  }
+}
