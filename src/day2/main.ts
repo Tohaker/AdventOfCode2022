@@ -29,10 +29,6 @@ export const calculateScore = (game: string) => scoreMap[game.trim()];
 export const calculateStrategy = (game: string) => strategyMap[game.trim()];
 
 export class Day2 extends Day {
-  constructor() {
-    super();
-  }
-
   part1(input: string) {
     return input.split("\n").reduce((acc, l) => acc + calculateScore(l), 0);
   }
