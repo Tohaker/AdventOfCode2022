@@ -26,10 +26,6 @@ const loadInputToBackpacks = (input: string) => {
 };
 
 export class Day1 extends Day {
-  constructor() {
-    super();
-  }
-
   part1(input: string) {
     return loadInputToBackpacks(input)[0];
   }

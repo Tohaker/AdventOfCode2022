@@ -2,8 +2,9 @@ import prompts from "npm:prompts";
 
 import { Day1 } from "./day1/main.ts";
 import { Day2 } from "./day2/main.ts";
+import { Day3 } from "./day3/main.ts";
 
-const puzzles = [new Day1(), new Day2()];
+const puzzles = [new Day1(), new Day2(), new Day3()];
 
 const { day } = (await prompts({
   type: "number",
