@@ -1,3 +1,5 @@
+import { Day } from "../day.ts";
+
 const scoreMap: Record<string, number> = {
   "A X": 4,
   "A Y": 8,
@@ -26,8 +28,16 @@ export const calculateScore = (game: string) => scoreMap[game.trim()];
 
 export const calculateStrategy = (game: string) => strategyMap[game.trim()];
 
-export const runPart1 = (input: string) =>
-  input.split("\n").reduce((acc, l) => acc + calculateScore(l), 0);
+export class Day2 extends Day {
+  constructor() {
+    super();
+  }
 
-export const runPart2 = (input: string) =>
-  input.split("\n").reduce((acc, l) => acc + calculateStrategy(l), 0);
+  part1(input: string) {
+    return input.split("\n").reduce((acc, l) => acc + calculateScore(l), 0);
+  }
+
+  part2(input: string) {
+    return input.split("\n").reduce((acc, l) => acc + calculateStrategy(l), 0);
+  }
+}
