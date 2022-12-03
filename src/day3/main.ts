@@ -14,9 +14,8 @@ export const findDuplicateItem = (rucksack: string) => {
   const firstCompartment = rucksack.slice(0, rucksack.length / 2).split("");
   const secondCompartment = rucksack.slice(rucksack.length / 2).split("");
 
-  const commonItem = firstCompartment.filter((item) =>
-    secondCompartment.includes(item)
-  )[0];
+  const commonItem =
+    firstCompartment.filter((item) => secondCompartment.includes(item))[0];
 
   return convertStringToPriority(commonItem);
 };
@@ -27,7 +26,7 @@ export const findCommonItem = (rucksacks: string[]) => {
   const third = rucksacks[2].split("");
 
   const commonItem = first.filter(
-    (item) => second.includes(item) && third.includes(item)
+    (item) => second.includes(item) && third.includes(item),
   )[0];
 
   return convertStringToPriority(commonItem);
