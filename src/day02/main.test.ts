@@ -28,7 +28,7 @@ describe("part 1", () => {
   });
 
   it("should return the correct result for the input", () => {
-    const input = Deno.readTextFileSync("./src/day2/input.txt");
+    const input = Deno.readTextFileSync("./src/day02/input.txt");
 
     assertEquals(day2.part1(input), 11666);
   });
@@ -58,7 +58,7 @@ describe("part 2", () => {
   });
 
   it("should return the correct result for the input", () => {
-    const input = Deno.readTextFileSync("./src/day2/input.txt");
+    const input = Deno.readTextFileSync("./src/day02/input.txt");
 
     assertEquals(day2.part2(input), 12767);
   });

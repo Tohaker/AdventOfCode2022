@@ -20,11 +20,11 @@ jobs:
         run: |
           day=$(date +%d)
           url_day=$(echo $day | sed 's/^0*//')
-          mkdir -p src/${day}
+          mkdir -p src/day${day}
           curl --cookie "session=${SESSION}" \
-            -o src/${day}/input.txt \
+            -o src/day${day}/input.txt \
             "https://adventofcode.com/2022/day/${url_day}/input"
-          truncate -s -1 src/${day}/input.txt
+          truncate -s -1 src/day${day}/input.txt
         env:
           SESSION: ${{ secrets.AOC_SESSION_COOKIE }}
 
