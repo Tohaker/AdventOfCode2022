@@ -37,7 +37,7 @@ describe("part 1", () => {
     it("should return the correct answer for the input", () => {
       assertEquals(
         day1.part1(Deno.readTextFileSync("./src/day01/input.txt")),
-        67658
+        67658,
       );
     });
 });
@@ -64,7 +64,7 @@ describe("part 2", () => {
     it("should return the correct answer for the input", () => {
       assertEquals(
         day1.part2(Deno.readTextFileSync("./src/day01/input.txt")),
-        200158
+        200158,
       );
     });
 });
