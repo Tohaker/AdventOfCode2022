@@ -1,10 +1,11 @@
 import prompts from "npm:prompts";
 
-import { Day1 } from "./day1/main.ts";
-import { Day2 } from "./day2/main.ts";
-import { Day3 } from "./day3/main.ts";
+import { Day1 } from "./day01/main.ts";
+import { Day2 } from "./day02/main.ts";
+import { Day3 } from "./day03/main.ts";
+import { Day4 } from "./day04/main.ts";
 
-const puzzles = [new Day1(), new Day2(), new Day3()];
+const puzzles = [new Day1(), new Day2(), new Day3(), new Day4()];
 
 const { day } = (await prompts({
   type: "number",
@@ -14,7 +15,9 @@ const { day } = (await prompts({
   max: puzzles.length,
 })) as { day: number };
 
-const input = Deno.readTextFileSync(`./src/day${day}/input.txt`);
+const input = Deno.readTextFileSync(
+  `./src/day${String(day).padStart(2, "0")}/input.txt`
+);
 
 console.log(`Day ${day}:`);
 console.log("-------------------");
