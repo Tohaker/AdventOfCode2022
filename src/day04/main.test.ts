@@ -1,7 +1,7 @@
 import {
-  assertFalse,
   assert,
   assertEquals,
+  assertFalse,
 } from "https://deno.land/std@0.161.0/testing/asserts.ts";
 import { describe, it } from "https://deno.land/std@0.161.0/testing/bdd.ts";
 import { checkFullOverlaps, checkPartialOverlaps, Day4 } from "./main.ts";
