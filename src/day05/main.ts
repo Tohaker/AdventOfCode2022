@@ -1,15 +1,40 @@
 import { Day } from "../day.ts";
 
+export const parseCrates = (rows: string[]) => {
+  const lineLength = rows[0].length + 1;
+
+  const crates: string[][] = Array.from(Array(lineLength / 4), () => []);
+
+  rows.slice(0, -1).forEach((row) => {
+    const cratesInRow = row.match(/.{1,4}/g);
+
+    if (cratesInRow) {
+      cratesInRow.forEach((crate, i) => {
+        if (crate.trim() !== "") {
+          crates[i].unshift(crate.charAt(1));
+        }
+      });
+    }
+  });
+
+  return crates;
+};
+
+const parseInstruction = (instruction: string) => {
+  const [qty, start, end] = instruction.match(/\d+/gm)?.map((n) => {
+    return parseInt(n);
+  }) ?? [];
+
+  return { qty, start, end };
+};
+
 export const performInstruction = (
   instruction: string,
-  positions: string[][]
+  positions: string[][],
 ) => {
   const newPositions: string[][] = structuredClone(positions);
 
-  const [qty, start, end] =
-    instruction.match(/\d+/gm)?.map((n) => {
-      return parseInt(n);
-    }) ?? [];
+  const { qty, start, end } = parseInstruction(instruction);
 
   for (let i = 0; i < qty; i++) {
     const crate = newPositions[start - 1].pop();
@@ -21,18 +46,15 @@ export const performInstruction = (
 
 export const performNewInstruction = (
   instruction: string,
-  positions: string[][]
+  positions: string[][],
 ) => {
   const newPositions: string[][] = structuredClone(positions);
 
-  const [qty, start, end] =
-    instruction.match(/\d+/gm)?.map((n) => {
-      return parseInt(n);
-    }) ?? [];
+  const { qty, start, end } = parseInstruction(instruction);
 
   const crates = newPositions[start - 1].splice(
     newPositions[start - 1].length - qty,
-    qty
+    qty,
   );
 
   newPositions[end - 1].push(...crates);
@@ -40,96 +62,40 @@ export const performNewInstruction = (
   return newPositions;
 };
 
+const setupPart = (input: string) => {
+  const lines = input.split("\n");
+  const inputBreak = lines.findIndex((l) => l.trim() === "");
+
+  const startingPositions = parseCrates(lines.slice(0, inputBreak));
+  const instructions = lines.slice(inputBreak + 1).map((l) => l.trim());
+
+  return { startingPositions, instructions };
+};
+
+const runPart =
+  (fn: typeof performInstruction | typeof performNewInstruction) =>
+  ({
+    startingPositions,
+    instructions,
+  }: {
+    startingPositions: string[][];
+    instructions: string[];
+  }) => {
+    let positions: string[][] = structuredClone(startingPositions);
+
+    instructions.forEach((ins) => {
+      positions = fn(ins, positions);
+    });
+
+    return positions.reduce((acc, pos) => acc + pos[pos.length - 1], "");
+  };
+
 export class Day5 extends Day {
   part1(input: string): string | number | Promise<number> {
-    if (input === "example") {
-      const exampleStartingPositions = [["Z", "N"], ["M", "C", "D"], ["P"]];
-      const instructions = `move 1 from 2 to 1
-      move 3 from 1 to 3
-      move 2 from 2 to 1
-      move 1 from 1 to 2`
-        .split(`\n`)
-        .map((l) => l.trim());
-
-      let positions: string[][] = structuredClone(exampleStartingPositions);
-
-      instructions.forEach((ins) => {
-        positions = performInstruction(ins, positions);
-      });
-
-      return positions.reduce((acc, pos) => acc + pos[pos.length - 1], "");
-    } else {
-      const startingPositions = [
-        ["N", "B", "D", "T", "V", "G", "Z", "J"],
-        ["S", "R", "M", "D", "W", "P", "F"],
-        ["V", "C", "R", "S", "Z"],
-        ["R", "T", "J", "Z", "P", "H", "G"],
-        ["T", "C", "J", "N", "D", "Z", "Q", "F"],
-        ["N", "V", "P", "W", "G", "S", "F", "M"],
-        ["G", "C", "V", "B", "P", "Q"],
-        ["Z", "B", "P", "N"],
-        ["W", "P", "J"],
-      ];
-
-      const input = Deno.readTextFileSync("./src/day05/input.txt");
-
-      const instructions = input
-        .split("\n")
-        .slice(10)
-        .map((l) => l.trim());
-      let positions: string[][] = structuredClone(startingPositions);
-
-      instructions.forEach((ins) => {
-        positions = performInstruction(ins, positions);
-      });
-
-      return positions.reduce((acc, pos) => acc + pos[pos.length - 1], "");
-    }
+    return runPart(performInstruction)(setupPart(input));
   }
 
   part2(input: string): string | number | Promise<number> {
-    if (input === "example") {
-      const exampleStartingPositions = [["Z", "N"], ["M", "C", "D"], ["P"]];
-      const instructions = `move 1 from 2 to 1
-        move 3 from 1 to 3
-        move 2 from 2 to 1
-        move 1 from 1 to 2`
-        .split(`\n`)
-        .map((l) => l.trim());
-
-      let positions: string[][] = structuredClone(exampleStartingPositions);
-
-      instructions.forEach((ins) => {
-        positions = performNewInstruction(ins, positions);
-      });
-
-      return positions.reduce((acc, pos) => acc + pos[pos.length - 1], "");
-    } else {
-      const startingPositions = [
-        ["N", "B", "D", "T", "V", "G", "Z", "J"],
-        ["S", "R", "M", "D", "W", "P", "F"],
-        ["V", "C", "R", "S", "Z"],
-        ["R", "T", "J", "Z", "P", "H", "G"],
-        ["T", "C", "J", "N", "D", "Z", "Q", "F"],
-        ["N", "V", "P", "W", "G", "S", "F", "M"],
-        ["G", "C", "V", "B", "P", "Q"],
-        ["Z", "B", "P", "N"],
-        ["W", "P", "J"],
-      ];
-
-      const input = Deno.readTextFileSync("./src/day05/input.txt");
-
-      const instructions = input
-        .split("\n")
-        .slice(10)
-        .map((l) => l.trim());
-      let positions: string[][] = structuredClone(startingPositions);
-
-      instructions.forEach((ins) => {
-        positions = performNewInstruction(ins, positions);
-      });
-
-      return positions.reduce((acc, pos) => acc + pos[pos.length - 1], "");
-    }
+    return runPart(performNewInstruction)(setupPart(input));
   }
 }
