@@ -6,8 +6,6 @@ import {
 } from "https://deno.land/std@0.161.0/testing/bdd.ts";
 import { Day7 } from "./main.ts";
 
-const day7 = new Day7();
-
 describe("part 1", () => {
   afterAll(() => {
     try {
@@ -42,17 +40,19 @@ describe("part 1", () => {
     5626152 d.ext
     7214296 k`;
 
-    assertEquals(day7.part1(input), 95437);
+    const day7 = new Day7(input);
+
+    assertEquals(day7.part1(), 95437);
   });
 
   it("should return the correct answer for the input", () => {
-    const input = Deno.readTextFileSync("./src/day07/input.txt");
+    const day7 = new Day7();
 
-    assertEquals(day7.part1(input), 1444896);
+    assertEquals(day7.part1(), 1444896);
   });
 });
 
-describe("part 1", () => {
+describe("part 2", () => {
   afterAll(() => {
     try {
       Deno.removeSync("./src/day07/output", { recursive: true });
@@ -86,12 +86,14 @@ describe("part 1", () => {
     5626152 d.ext
     7214296 k`;
 
-    assertEquals(day7.part2(input), 24933642);
+    const day7 = new Day7(input);
+
+    assertEquals(day7.part2(), 24933642);
   });
 
   it("should return the correct answer for the input", () => {
-    const input = Deno.readTextFileSync("./src/day07/input.txt");
+    const day7 = new Day7();
 
-    assertEquals(day7.part2(input), 404395);
+    assertEquals(day7.part2(), 404395);
   });
 });

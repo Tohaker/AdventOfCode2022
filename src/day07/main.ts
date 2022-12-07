@@ -12,6 +12,8 @@ enum FileType {
 }
 
 const BASE_DIR = "./src/day07/output";
+const MAX_SPACE = 70000000;
+const DESIRED_FREE_SPACE = 30000000;
 
 let startingDir = "";
 
@@ -58,36 +60,44 @@ export const createDirectoryStructure = (terminal: string[]) => {
   });
 };
 
-const MAX_SPACE = 70000000;
-const DESIRED_FREE_SPACE = 30000000;
+const getDirectorySizes = () => {
+  Deno.chdir(startingDir);
+
+  const directorySizes: number[] = [];
+
+  for (const e of walkSync(BASE_DIR)) {
+    if (e.isDirectory) {
+      let currentDirTotal = 0;
+
+      for (const f of walkSync(e.path)) {
+        if (f.isFile) {
+          currentDirTotal += parseInt(Deno.readTextFileSync(f.path).toString());
+        }
+      }
+
+      directorySizes.push(currentDirTotal);
+    }
+  }
+
+  Deno.chdir(startingDir);
+
+  return directorySizes;
+};
 
 export class Day7 extends Day {
-  part1(input: string): string | number | Promise<number> {
-    createDirectoryStructure(input.split("\n").map((l) => l.trim()));
+  constructor(_input?: string) {
+    super();
+
+    const input = Deno.readTextFileSync("./src/day07/input.txt");
+    createDirectoryStructure(
+      (_input ?? input).split("\n").map((l) => l.trim()),
+    );
 
     Deno.chdir(startingDir);
+  }
 
-    const directorySizes: number[] = [];
-
-    for (const e of walkSync(BASE_DIR)) {
-      if (e.isDirectory) {
-        let currentDirTotal = 0;
-
-        for (const f of walkSync(e.path)) {
-          if (f.isFile) {
-            currentDirTotal += parseInt(
-              Deno.readTextFileSync(f.path).toString(),
-            );
-          }
-        }
-
-        directorySizes.push(currentDirTotal);
-      }
-    }
-
-    Deno.chdir(startingDir);
-
-    directorySizes.sort((a, b) => a - b);
+  part1(): string | number | Promise<number> {
+    const directorySizes = getDirectorySizes().sort((a, b) => a - b);
 
     let total = 0;
 
@@ -102,38 +112,10 @@ export class Day7 extends Day {
     return total;
   }
 
-  part2(input: string): string | number | Promise<number> {
-    createDirectoryStructure(input.split("\n").map((l) => l.trim()));
+  part2(): string | number | Promise<number> {
+    const directorySizes = getDirectorySizes().sort((a, b) => b - a);
 
-    Deno.chdir(startingDir);
-
-    const directorySizes: number[] = [];
-
-    for (const e of walkSync(BASE_DIR)) {
-      if (e.isDirectory) {
-        let currentDirTotal = 0;
-
-        for (const f of walkSync(e.path)) {
-          if (f.isFile) {
-            currentDirTotal += parseInt(
-              Deno.readTextFileSync(f.path).toString(),
-            );
-          }
-        }
-
-        directorySizes.push(currentDirTotal);
-      }
-    }
-
-    Deno.chdir(startingDir);
-
-    directorySizes.sort((a, b) => b - a);
-
-    const largestDir = directorySizes[0];
-
-    const unusedSpace = MAX_SPACE - largestDir;
-
-    const toBeDeleted = DESIRED_FREE_SPACE - unusedSpace;
+    const toBeDeleted = DESIRED_FREE_SPACE - (MAX_SPACE - directorySizes[0]);
 
     const filtered = directorySizes.filter((d) => d >= toBeDeleted);
 
