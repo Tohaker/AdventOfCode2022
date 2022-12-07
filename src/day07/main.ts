@@ -1,4 +1,5 @@
-type Tree = Record<string, any>;
+import { walkSync } from "https://deno.land/std/fs/mod.ts";
+import { Day } from "../day.ts";
 
 enum Command {
   CD = "cd",
@@ -10,34 +11,95 @@ enum FileType {
   DIR = "dir",
 }
 
-export const parseFileTree = (terminal: string[], tree: Tree = {}) => {
-  for (let i = 0; i < terminal.length; i++) {
-    const line = terminal[i];
+const BASE_DIR = "./src/day07/output";
 
+let startingDir = "";
+
+export const createDirectoryStructure = (terminal: string[]) => {
+  startingDir = Deno.cwd();
+
+  try {
+    Deno.removeSync(BASE_DIR, { recursive: true });
+  } catch (error) {
+    console.warn(error);
+  }
+
+  terminal.forEach((line) => {
     if (line.startsWith("$")) {
       // Terminal command
       const [_, command, dir] = line.split(" ");
 
       if (command === Command.CD) {
-        if (dir === Command.UP) {
-          return tree;
+        if (dir === "/") {
+          Deno.mkdirSync(BASE_DIR);
+          Deno.chdir(BASE_DIR);
+        } else if (dir === Command.UP) {
+          Deno.chdir("../");
+        } else {
+          try {
+            Deno.mkdirSync(dir);
+          } catch (_err) {
+            // Nop
+          }
+
+          Deno.chdir(dir);
         }
-
-        tree[dir] = parseFileTree(terminal.slice(i + 1));
-
-        return tree;
       }
     } else {
       // Terminal output
       const [type, name] = line.split(" ");
 
       if (type === FileType.DIR) {
-        tree[name] = {};
+        Deno.mkdirSync(name);
       } else {
-        tree[name] = parseInt(type);
+        Deno.writeTextFileSync(name, type);
       }
     }
+  });
+};
+
+export class Day7 extends Day {
+  part1(input: string): string | number | Promise<number> {
+    createDirectoryStructure(input.split("\n").map((l) => l.trim()));
+
+    Deno.chdir(startingDir);
+
+    const directorySizes: number[] = [];
+
+    for (const e of walkSync(BASE_DIR)) {
+      if (e.isDirectory) {
+        let currentDirTotal = 0;
+
+        for (const f of walkSync(e.path)) {
+          if (f.isFile) {
+            currentDirTotal += parseInt(
+              Deno.readTextFileSync(f.path).toString(),
+            );
+          }
+        }
+
+        directorySizes.push(currentDirTotal);
+      }
+    }
+
+    Deno.chdir(startingDir);
+
+    directorySizes.sort((a, b) => a - b);
+
+    let total = 0;
+
+    for (let i = 0; i < directorySizes.length; i++) {
+      if (directorySizes[i] <= 100000) {
+        total += directorySizes[i];
+      } else {
+        break;
+      }
+    }
+
+    return total;
   }
 
-  return tree;
-};
+  part2(input: string): string | number | Promise<number> {
+    return 0;
+  }
+}
