@@ -6,6 +6,7 @@ import { Day3 } from "./day03/main.ts";
 import { Day4 } from "./day04/main.ts";
 import { Day5 } from "./day05/main.ts";
 import { Day6 } from "./day06/main.ts";
+import { Day7 } from "./day07/main.ts";
 
 const puzzles = [
   new Day1(),
@@ -14,6 +15,7 @@ const puzzles = [
   new Day4(),
   new Day5(),
   new Day6(),
+  new Day7(),
 ];
 
 const { day } = (await prompts({
