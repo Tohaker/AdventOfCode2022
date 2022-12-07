@@ -76,7 +76,7 @@ export class Day7 extends Day {
         for (const f of walkSync(e.path)) {
           if (f.isFile) {
             currentDirTotal += parseInt(
-              Deno.readTextFileSync(f.path).toString()
+              Deno.readTextFileSync(f.path).toString(),
             );
           }
         }
@@ -116,7 +116,7 @@ export class Day7 extends Day {
         for (const f of walkSync(e.path)) {
           if (f.isFile) {
             currentDirTotal += parseInt(
-              Deno.readTextFileSync(f.path).toString()
+              Deno.readTextFileSync(f.path).toString(),
             );
           }
         }
