@@ -58,6 +58,9 @@ export const createDirectoryStructure = (terminal: string[]) => {
   });
 };
 
+const MAX_SPACE = 70000000;
+const DESIRED_FREE_SPACE = 30000000;
+
 export class Day7 extends Day {
   part1(input: string): string | number | Promise<number> {
     createDirectoryStructure(input.split("\n").map((l) => l.trim()));
@@ -73,7 +76,7 @@ export class Day7 extends Day {
         for (const f of walkSync(e.path)) {
           if (f.isFile) {
             currentDirTotal += parseInt(
-              Deno.readTextFileSync(f.path).toString(),
+              Deno.readTextFileSync(f.path).toString()
             );
           }
         }
@@ -100,6 +103,40 @@ export class Day7 extends Day {
   }
 
   part2(input: string): string | number | Promise<number> {
-    return 0;
+    createDirectoryStructure(input.split("\n").map((l) => l.trim()));
+
+    Deno.chdir(startingDir);
+
+    const directorySizes: number[] = [];
+
+    for (const e of walkSync(BASE_DIR)) {
+      if (e.isDirectory) {
+        let currentDirTotal = 0;
+
+        for (const f of walkSync(e.path)) {
+          if (f.isFile) {
+            currentDirTotal += parseInt(
+              Deno.readTextFileSync(f.path).toString()
+            );
+          }
+        }
+
+        directorySizes.push(currentDirTotal);
+      }
+    }
+
+    Deno.chdir(startingDir);
+
+    directorySizes.sort((a, b) => b - a);
+
+    const largestDir = directorySizes[0];
+
+    const unusedSpace = MAX_SPACE - largestDir;
+
+    const toBeDeleted = DESIRED_FREE_SPACE - unusedSpace;
+
+    const filtered = directorySizes.filter((d) => d >= toBeDeleted);
+
+    return filtered[filtered.length - 1];
   }
 }
