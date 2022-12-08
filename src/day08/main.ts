@@ -2,7 +2,7 @@ import { Day } from "../day.ts";
 
 export const isVisible = (
   grid: number[][],
-  { x, y }: { x: number; y: number }
+  { x, y }: { x: number; y: number },
 ) => {
   const treeHeight = grid[y][x];
   const directions: number[][] = Array.from(Array(4), () => []);
@@ -40,7 +40,7 @@ export const isVisible = (
 
 export const calculateScenicScore = (
   grid: number[][],
-  { x, y }: { x: number; y: number }
+  { x, y }: { x: number; y: number },
 ) => {
   const treeHeight = grid[y][x];
   const directions: number[][] = Array.from(Array(4), () => []);
