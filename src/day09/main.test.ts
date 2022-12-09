@@ -142,6 +142,17 @@ describe("part 1", () => {
           { x: 1, y: 0 }
         );
       });
+
+      it("should not move the tail if the head stays in range", () => {
+        assertEquals(
+          getTailPosition({
+            direction: Direction.RIGHT,
+            head: { x: 1, y: 3 },
+            tail: { x: 2, y: 4 },
+          }),
+          { x: 2, y: 4 }
+        );
+      });
     });
 
     it("should return the correct result for the example", () => {
@@ -156,5 +167,39 @@ describe("part 1", () => {
 
       assertEquals(day9.part1(input), 13);
     });
+
+    it("should return the correct result for the input", () => {
+      const input = Deno.readTextFileSync("./src/day09/input.txt");
+
+      assertEquals(day9.part1(input), 6081);
+    });
+  });
+});
+
+describe("part 2", () => {
+  it("should return the correct result for the small example", () => {
+    const input = `R 4
+        U 4
+        L 3
+        D 1
+        R 4
+        D 1
+        L 5
+        R 2`;
+
+    assertEquals(day9.part2(input), 1);
+  });
+
+  it.only("should return the correct result for the large example", () => {
+    const input = `R 5
+    U 8
+    L 8
+    D 3
+    R 17
+    D 10
+    L 25
+    U 20`;
+
+    assertEquals(day9.part2(input), 36);
   });
 });
