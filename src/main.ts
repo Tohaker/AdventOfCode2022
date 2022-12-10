@@ -8,6 +8,7 @@ import { Day5 } from "./day05/main.ts";
 import { Day6 } from "./day06/main.ts";
 import { Day7 } from "./day07/main.ts";
 import { Day8 } from "./day08/main.ts";
+import { Day10 } from "./day10/main.ts";
 
 const puzzles = [
   new Day1(),
@@ -18,6 +19,8 @@ const puzzles = [
   new Day6(),
   new Day7(),
   new Day8(),
+  undefined,
+  new Day10(),
 ];
 
 const { day } = (await prompts({
@@ -36,8 +39,8 @@ console.log(`Day ${day}:`);
 console.log("-------------------");
 console.time("duration");
 
-console.log(`Part 1: ${puzzles[day - 1].part1(input)}`);
-console.log(`Part 2: ${puzzles[day - 1].part2(input)}`);
+console.log(`Part 1: ${puzzles[day - 1]?.part1(input)}`);
+console.log(`Part 2: ${puzzles[day - 1]?.part2(input)}`);
 
 console.log("-------------------");
 
