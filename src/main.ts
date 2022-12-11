@@ -9,6 +9,7 @@ import { Day6 } from "./day06/main.ts";
 import { Day7 } from "./day07/main.ts";
 import { Day8 } from "./day08/main.ts";
 import { Day10 } from "./day10/main.ts";
+import { Day11 } from "./day11/main.ts";
 
 const puzzles = [
   new Day1(),
@@ -21,6 +22,7 @@ const puzzles = [
   new Day8(),
   undefined,
   new Day10(),
+  new Day11(),
 ];
 
 const { day } = (await prompts({
@@ -32,7 +34,7 @@ const { day } = (await prompts({
 })) as { day: number };
 
 const input = Deno.readTextFileSync(
-  `./src/day${String(day).padStart(2, "0")}/input.txt`,
+  `./src/day${String(day).padStart(2, "0")}/input.txt`
 );
 
 console.log(`Day ${day}:`);
