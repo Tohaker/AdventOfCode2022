@@ -34,7 +34,7 @@ const { day } = (await prompts({
 })) as { day: number };
 
 const input = Deno.readTextFileSync(
-  `./src/day${String(day).padStart(2, "0")}/input.txt`
+  `./src/day${String(day).padStart(2, "0")}/input.txt`,
 );
 
 console.log(`Day ${day}:`);

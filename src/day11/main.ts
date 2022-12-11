@@ -15,10 +15,9 @@ export const parseMonkey = (details: string): Monkey => {
 
   const items = lines[0].match(/\d+/gm)?.map((n) => parseInt(n)) ?? [];
 
-  const operationComponents =
-    lines[1]
-      .match(/old|\d+|\*|\+/gm)
-      ?.map((c) => (isNaN(+c) ? c : parseInt(c))) ?? [];
+  const operationComponents = lines[1]
+    .match(/old|\d+|\*|\+/gm)
+    ?.map((c) => (isNaN(+c) ? c : parseInt(c))) ?? [];
   const operation = (old: number) => {
     if (operationComponents[1] === "+") {
       return (
@@ -69,7 +68,7 @@ export const runRound = (monkeys: Monkey[], divisors: number) => {
     (acc, { items, inspectionCount }) => {
       return [...acc, { items, inspectionCount }];
     },
-    []
+    [],
   );
 };
 
