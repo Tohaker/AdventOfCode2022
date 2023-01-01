@@ -9,8 +9,8 @@ const compareLists = (left: Packet, right: Packet): boolean | undefined => {
     const currentL = left[i];
     const currentR = right[i];
 
-    if (!currentL && !!currentR) return true;
-    if (!!currentL && !currentR) return false;
+    if (currentL === undefined && currentR !== undefined) return true;
+    if (currentL !== undefined && currentR === undefined) return false;
 
     if (typeof currentL === "number" && typeof currentR === "number") {
       if (currentL === currentR) continue;
@@ -18,17 +18,17 @@ const compareLists = (left: Packet, right: Packet): boolean | undefined => {
     } else if (Array.isArray(currentL) && Array.isArray(currentR)) {
       const output = compareLists(currentL, currentR);
 
-      if (!output) continue;
+      if (output === undefined) continue;
       return output;
     } else if (Array.isArray(currentL) && typeof currentR === "number") {
       const output = compareLists(currentL, [currentR]);
 
-      if (!output) continue;
+      if (output === undefined) continue;
       return output;
     } else if (typeof currentL === "number" && Array.isArray(currentR)) {
       const output = compareLists([currentL], currentR);
 
-      if (!output) continue;
+      if (output === undefined) continue;
       return output;
     }
   }
@@ -54,14 +54,24 @@ export class Day13 extends Day {
     return packets.reduce((acc, { left, right }, i) => {
       const yes = inRightOrder(left, right);
 
-      console.log({ yes, left, right, i });
-
       if (yes) return acc + i + 1;
       return acc;
     }, 0);
   }
 
   part2(input: string): string | number | Promise<number> {
-    return 0;
+    const divPacket1 = "[[2]]";
+    const divPacket2 = "[[6]]";
+
+    const packets = input
+      .split(/\n\s*\n/)
+      .reduce<string[]>((acc, lines) => acc.concat(...lines.split("\n")), []);
+    packets.push(divPacket1, divPacket2);
+
+    packets.sort((l, r) => (inRightOrder(l, r) ? -1 : 1));
+
+    return (
+      (packets.indexOf(divPacket1) + 1) * (packets.indexOf(divPacket2) + 1)
+    );
   }
 }
